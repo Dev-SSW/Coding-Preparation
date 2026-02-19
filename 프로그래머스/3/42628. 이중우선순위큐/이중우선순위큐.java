@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    public List<Integer> solution(String[] operations) {
+    public int[] solution(String[] operations) {
         Deque<Integer> dq = new ArrayDeque<>();
         for(int i = 0; i < operations.length; i++) {
             // 공백을 기준으로 분리
@@ -14,6 +14,10 @@ class Solution {
                 Collections.sort(list);
                 dq = new ArrayDeque<>(list);
             } else {
+                if (dq.isEmpty()) {
+                    // 비어있으면 무시
+                    continue; 
+                }
                 // 작은게 앞, 큰게 뒤
                 if(b == -1) {
                     dq.pollFirst();
@@ -22,19 +26,11 @@ class Solution {
                 }
             }
         }
-        List<Integer> answer = new ArrayList<>();
-        if(dq.isEmpty()) {
-            answer.add(0);
-            answer.add(0);
-        } else {
-            if(dq.size() == 1) {
-                answer.add(dq.peekLast());
-                answer.add(dq.peekLast());
-            } else {
-                answer.add(dq.peekLast());
-                answer.add(dq.peekFirst());
-            }
+        if (dq.isEmpty()) { 
+            return new int[]{0, 0};
         }
-        return answer;
+        int max = dq.peekLast();
+        int min = dq.peekFirst();
+        return new int[]{max, min};
     }
 }
